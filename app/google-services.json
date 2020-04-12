@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "393496816731",
+    "firebase_url": "https://fir-imagerecycleview.firebaseio.com",
+    "project_id": "fir-imagerecycleview",
+    "storage_bucket": "fir-imagerecycleview.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393496816731:android:258ce4b2b1e17296f3a37e",
+        "android_client_info": {
+          "package_name": "com.example.firebaseimagerecycleview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393496816731-ur4udnabt1n3deuob5e7nuh9ec41ge4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUVja9iheTCjxAjkKaXqzUB03aEj5c_Hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393496816731-ur4udnabt1n3deuob5e7nuh9ec41ge4n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
