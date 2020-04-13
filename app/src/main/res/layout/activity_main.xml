@@ -24,13 +24,13 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/btn_pick"
-                    android:text="Search"
+                    android:text="Slap"
                     />
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:hint="Choose your picture"
+                    android:hint="Description"
                     android:gravity="center_horizontal"
                     android:id="@+id/edt_pick"/>
             </LinearLayout>

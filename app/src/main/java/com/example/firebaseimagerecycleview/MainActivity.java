@@ -1,18 +1,32 @@
 package com.example.firebaseimagerecycleview;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.firebaseimagerecycleview.organization.Upload;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar progressBar;
     private ImageView imgShow;
     private Uri mUri;
+    private StorageReference storageReference;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnUpload.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
         tvBtnReload.setOnClickListener(this);
+        /* uploads/435435435.jpg */
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        databaseReference = FirebaseDatabase.getInstance().getReference("uploads");
     }
 
     @Override
@@ -53,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_upload:
-
+                upLoad();
                 break;
         }
     }
@@ -73,6 +92,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mUri = data.getData();
             Picasso.get().load(mUri).into(imgShow);
             ///To set ImageView Uri like imageURI
+
+        }
+    }
+    private String getFileExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap min = MimeTypeMap.getSingleton();
+        return min.getExtensionFromMimeType(cr.getType(uri));
+    }
+    private void upLoad(){
+        if (mUri!=null){
+            /// uploads/System.currentTimeMillis()+"."+getFileExtension(uri) likes above
+            /// child just to continue the storageReference
+            StorageReference fileReference = storageReference.child(
+                    System.currentTimeMillis() +"."+getFileExtension(mUri));
+            fileReference.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(0);
+                        }
+                    },5000);
+                    Toast.makeText(MainActivity.this,"Uploaded Successful",Toast.LENGTH_LONG).show();
+                    Upload upload = new Upload(edtSearch.getText().toString().trim(),
+                            taskSnapshot.getStorage().getDownloadUrl().toString());
+                    String uploadId = databaseReference.push().getKey();
+                    databaseReference.child(uploadId).setValue(upload);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MainActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.
+                            getTotalByteCount());
+                    progressBar.setProgress((int) progress);
+
+                }
+            });
+        }else {
+            Toast.makeText(this,"No file selected",Toast.LENGTH_LONG).show();
 
         }
     }
