@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         //startActivityForResult(intent,PICK_IMAGE);
-        startActivityForResult(Intent.createChooser(intent,"Select Profile Image"), PICK_IMAGE);
+        startActivityForResult(intent,PICK_IMAGE);//Intent.createChooser(intent,"Select Profile Image"), PICK_IMAGE);
     }
 
     @Override
