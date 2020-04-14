@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             progressBar.setProgress(0);
                         }
-                    },5000);
+                    },500);
                     Toast.makeText(MainActivity.this,"Uploaded Successful",Toast.LENGTH_LONG).show();
                     Upload upload = new Upload(edtSearch.getText().toString().trim(),
                             taskSnapshot.getStorage().getDownloadUrl().toString());
