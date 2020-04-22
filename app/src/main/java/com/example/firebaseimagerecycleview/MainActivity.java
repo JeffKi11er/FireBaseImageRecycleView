@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Uri mUri;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
+    private StorageTask uploadTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_upload:
-                upLoad();
+                if (uploadTask!=null&&uploadTask.isInProgress()){
+                    Toast.makeText(MainActivity.this,"Upload in Progress",Toast.LENGTH_LONG).show();
+                }else {
+                    upLoad();
+                }
                 break;
         }
     }
@@ -106,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             /// child just to continue the storageReference
             StorageReference fileReference = storageReference.child(
                     System.currentTimeMillis() +"."+getFileExtension(mUri));
-            fileReference.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+           uploadTask = fileReference.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Handler handler = new Handler();
