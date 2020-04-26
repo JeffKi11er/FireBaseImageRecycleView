@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 openFileChooser();
                 break;
             case R.id.btn_reload:
-
+                openImageActivity();
                 break;
             case R.id.btn_upload:
                 if (uploadTask!=null&&uploadTask.isInProgress()){
@@ -81,6 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+    private void openImageActivity() {
+        startActivity(new Intent(this,ImageActivity.class));
     }
 
     private void openFileChooser() {
