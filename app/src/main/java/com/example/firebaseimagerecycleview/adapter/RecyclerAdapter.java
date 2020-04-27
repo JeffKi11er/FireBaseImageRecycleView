@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.firebaseimagerecycleview.R;
 import com.example.firebaseimagerecycleview.organization.Upload;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -37,7 +37,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         Upload upload = pictures.get(position);
         holder.tvName.setText(upload.getmName());
-        Picasso.get().load(upload.getImageUrl()).fit().into(holder.imgRecycler);
+        //Picasso.get().load(upload.getImageUrl()).placeholder(R.drawable.error).fit().into(holder.imgRecycler);
+        Glide.with(context).load("com.google.android.gms.tasks.zzu@54b9440").into(holder.imgRecycler);
     }
 
     @Override
